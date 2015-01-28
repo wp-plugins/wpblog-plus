@@ -8,11 +8,7 @@ Stable tag: 1.3
 License: GPLv2 or later
 
 == Description ==
-WordPress Plus + 加速和优化你的WordPress博客！（仅建议中国大陆博主使用）
-本插件包含以下功能：
-1.替换Google Fonts库
-2.替换Gravatar头像加载方式
-3.替换WP后台中文字体为更美观的微软雅黑
+极致迷你和轻巧的WordPress Plus + 插件，轻松加速你的WordPress博客（仅建议中国大陆博主使用）。由于国内对GoogleFonts和Gravatar的服务器做了限制，导致博客速度非常缓慢，WordPress可以直接替换GooleFonts的加载源到360的前端库CDN并修改Gravatar头像的加载方式，提升你的博客速度，插件会持续优化并且添加新功能，敬请期待！
 
 == Installation ==
 1. 在WordPress 插件库中搜索"WordPress Plus +"，下载后启用插件

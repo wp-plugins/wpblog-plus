@@ -2,7 +2,7 @@
 /*
 Plugin Name: WordPress Plus +
 Plugin URI: http://ceoblog.gq/wordpress_plus
-Description: 多个小工具和功能集合插件，增强和加速你的WordPress！
+Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress！
 Version: 1.3.1
 Author: CEO
 Author URI: http://ceoblog.gq/
@@ -55,7 +55,7 @@ function pluginoptions_page()
 <div class="wrap">
 <h2>WordPress Plus + 插件控制面板</h2>
 <h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3>
-<div id="message" class="updated"><p>WordPress Plus + 1.2.1版本更新日志：</br>优化插件代码</div>
+<div id="message" class="updated"><p>WordPress Plus + 1.3.1版本更新日志：</br>优化插件代码</div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <input type="checkbox" name="msyh" id="msyh" <?php
@@ -68,7 +68,7 @@ function pluginoptions_page()
     echo get_option('wpplus_sslgravatar');
 ?> /> 启用“使用SSL方式调用Gravatar头像”功能<p>
 <input type="submit" class="button-primary" value="保存设置" /> &nbsp; 修改后台字体为雅黑功能需要刷新后生效
-<p>WordPress Plus + 版本 1.2 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a> &nbsp; <a href="http://ceoblog.gq/wordpress_plus">点击获取最新版本 & 使用说明</a>
+<p>WordPress Plus + 版本 1.3.1 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a>
 </form>
 </div>
 <?php
