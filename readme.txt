@@ -15,20 +15,23 @@ License: GPLv2 or later
 2. 启用后会自动跳转设置页面，配置后保存刷新即可
 
 == Frequently Asked Questions ==
-1. 插件出现问题如何反馈？
+1. 插件导致博客异常
 
-如果插件出现问题导致博客无法打开或者异常，请及时反馈到http://ceoblog.gq/wordpress-plus
+在插件更新发布之前作者都会进行调试，如果还是出现了问题可以反馈到http://ceoblog.gq/wordpress-plus，反馈后我会第一时间进行处理。
 
 == Screenshots ==
 1. 插件控制面板界面
 
-== Upgrade Notice ==
-= 1.3 =
-正式提交至WordPress插件库
-
 == Changelog ==
+= 1.3.2 =
+Bug fixes and performance…解决了保存设置时的一个小问题
+
 = 1.3.1 =
 优化插件代码
 
 = 1.3 =
 提交到WordPress插件库的第一个版本，包含基础功能，并优化了代码
+
+== Upgrade Notice ==
+= 1.3 =
+正式提交至WordPress插件库

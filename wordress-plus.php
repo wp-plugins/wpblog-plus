@@ -3,12 +3,12 @@
 Plugin Name: WordPress Plus +
 Plugin URI: http://ceoblog.gq/wordpress_plus
 Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress！
-Version: 1.3.1
+Version: 1.3.2
 Author: CEO
 Author URI: http://ceoblog.gq/
 */
 
-// 启用插件自动跳转至设置
+// 启用插件自动跳转至设置 //
 register_activation_hook(__FILE__, 'wpdaxue_plugin_activate');
 add_action('admin_init', 'wpdaxue_plugin_redirect');
 function wpdaxue_plugin_activate()
@@ -23,7 +23,7 @@ function wpdaxue_plugin_redirect()
     }
 }
 
-// 添加插件控制面板
+// 添加插件控制面板 //
 function register_plugin_settings_link($links)
 {
     $settings_link = '<a href="options-general.php?page=wordpress_plus">设置</a>';
@@ -34,28 +34,33 @@ $plugin = plugin_basename(__FILE__);
 add_filter("plugin_action_links_{$plugin}", 'register_plugin_settings_link');
 
 
-// 配置插件设置
+// 配置插件设置 //
 if (is_admin()) {
     add_action('admin_menu', 'wordpress_plus_menu');
 }
 
-// 配置插件设置
+// 配置插件设置 //
 function wordpress_plus_menu()
 {
     add_options_page('WordPress Plus + 插件控制面板', 'WordPress Plus +', 'administrator', 'wordpress_plus', 'pluginoptions_page');
 }
 
-// 插件设置核心部分
+// 插件设置核心部分 //
 function pluginoptions_page()
 {
+    // 表单提交后执行的操作 //
     if ($_POST['update_pluginoptions'] == 'true') {
+        echo '<p><div id="message" class="updated"><p>设置已保存</p></div></p>';
         pluginoptions_update();
+        echo "<script type='text/javascript'>document.location.href='options-general.php?page=wordpress_plus'</script>";
     }
 ?>
 <div class="wrap">
+<p>
 <h2>WordPress Plus + 插件控制面板</h2>
-<h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3>
-<div id="message" class="updated"><p>WordPress Plus + 1.3.1版本更新日志：</br>优化插件代码</div>
+<h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3> 
+<div id="message" class="updated"><p>WordPress Plus + 1.3.2版本更新日志：</br>Bug fixes and performance…</div>
+</p>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <input type="checkbox" name="msyh" id="msyh" <?php
@@ -67,13 +72,13 @@ function pluginoptions_page()
 <input type="checkbox" name="sslgravatar" id="sslgravatar" <?php
     echo get_option('wpplus_sslgravatar');
 ?> /> 启用“使用SSL方式调用Gravatar头像”功能<p>
-<input type="submit" class="button-primary" value="保存设置" /> &nbsp; 修改后台字体为雅黑功能需要刷新后生效
-<p>WordPress Plus + 版本 1.3.1 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a>
+<input type="submit" class="button-primary" value="保存设置" />
+<p>WordPress Plus + 版本 1.3.2 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a>
 </form>
 </div>
 <?php
 }
-// 插件设置验证
+// 插件设置验证  //
 function pluginoptions_update()
 {
     if ($_POST['msyh'] == 'on') {
@@ -100,7 +105,7 @@ function pluginoptions_update()
 if (get_option('wpplus_msyh') == 'checked') {
 ?>
 <?php
-// 改变后台字体为微软雅黑
+    // 改变后台字体为微软雅黑 //
     function admin_fonts()
     {
         echo '<style type="text/css">
@@ -123,7 +128,7 @@ if (get_option('wpplus_msyh') == 'checked') {
 if (get_option('wpplus_googlefont') == 'checked') {
 ?>
 <?php
-// 修改Open_sans加载源为360前端库CDN
+    // 修改Open_sans加载源为360前端库CDN //
     function devework_replace_open_sans()
     {
         wp_deregister_style('open-sans');
@@ -143,7 +148,7 @@ if (get_option('wpplus_googlefont') == 'checked') {
 if (get_option('wpplus_sslgravatar') == 'checked') {
 ?>
 <?php
-// 使用SSL方式调用Gravatar头像
+    // 使用SSL方式调用Gravatar头像 //
     function get_ssl_avatar($avatar)
     {
         $avatar = preg_replace('/.*\/avatar\/(.*)\?s=([\d]+)&.*/', '<img src="https://secure.gravatar.com/avatar/$1?s=$2" class="avatar avatar-$2" height="$2" width="$2">', $avatar);
