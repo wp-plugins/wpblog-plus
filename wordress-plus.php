@@ -2,23 +2,23 @@
 /*
 Plugin Name: WordPress Plus +
 Plugin URI: http://ceoblog.gq/wordpress_plus
-Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress！
-Version: 1.3.2
+Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
+Version: 1.4
 Author: CEO
 Author URI: http://ceoblog.gq/
 */
 
 // 启用插件自动跳转至设置 //
-register_activation_hook(__FILE__, 'wpdaxue_plugin_activate');
-add_action('admin_init', 'wpdaxue_plugin_redirect');
-function wpdaxue_plugin_activate()
+register_activation_hook(__FILE__, 'plugin_activate');
+add_action('admin_init', 'plugin_redirect');
+function plugin_activate()
 {
-    add_option('my_plugin_do_activation_redirect', true);
+    add_option('do_activation_redirect', true);
 }
-function wpdaxue_plugin_redirect()
+function plugin_redirect()
 {
-    if (get_option('my_plugin_do_activation_redirect', false)) {
-        delete_option('my_plugin_do_activation_redirect');
+    if (get_option('do_activation_redirect', false)) {
+        delete_option('do_activation_redirect');
         wp_redirect(admin_url('options-general.php?page=wordpress_plus'));
     }
 }
@@ -59,26 +59,26 @@ function pluginoptions_page()
 <p>
 <h2>WordPress Plus + 插件控制面板</h2>
 <h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3> 
-<div id="message" class="updated"><p>WordPress Plus + 1.3.2版本更新日志：</br>Bug fixes and performance…</div>
+<div id="message" class="updated"><p>WordPress Plus + 1.4版本更新日志：</br>优化使用SSL调用Gravatar头像的方式，现在不会出现某些地方仍任是HTTP头像无法显示的问题了</div>
 </p>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <input type="checkbox" name="msyh" id="msyh" <?php
     echo get_option('wpplus_msyh');
-?> /> 启用“修改后台中文字体为微软雅黑”功能<p>
+?> /> 修改后台中文字体为微软雅黑<p>
 <input type="checkbox" name="googlefont" id="googlefont" <?php
     echo get_option('wpplus_googlefont');
-?> /> 启用“Open-Sans加载源替换为360前端库CDN”功能<p>
+?> /> Open-Sans加载源替换为360前端库CDN<p>
 <input type="checkbox" name="sslgravatar" id="sslgravatar" <?php
     echo get_option('wpplus_sslgravatar');
-?> /> 启用“使用SSL方式调用Gravatar头像”功能<p>
+?> /> 使用SSL方式调用Gravatar头像<p>
 <input type="submit" class="button-primary" value="保存设置" />
-<p>WordPress Plus + 版本 1.3.2 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a>
+<p>WordPress Plus + 版本 1.4 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a>
 </form>
 </div>
 <?php
 }
-// 插件设置验证  //
+// 插件设置提交验证  //
 function pluginoptions_update()
 {
     if ($_POST['msyh'] == 'on') {
@@ -149,12 +149,11 @@ if (get_option('wpplus_sslgravatar') == 'checked') {
 ?>
 <?php
     // 使用SSL方式调用Gravatar头像 //
-    function get_ssl_avatar($avatar)
-    {
-        $avatar = preg_replace('/.*\/avatar\/(.*)\?s=([\d]+)&.*/', '<img src="https://secure.gravatar.com/avatar/$1?s=$2" class="avatar avatar-$2" height="$2" width="$2">', $avatar);
-        return $avatar;
-    }
-    add_filter('get_avatar', 'get_ssl_avatar');
+	function ssl_gravatar( $avatar ) {
+    $avatar = str_replace( array( 'http://www.gravatar.com', 'http://0.gravatar.com', 'http://1.gravatar.com', 'http://2.gravatar.com' ), 'https://secure.gravatar.com', $avatar );
+    return $avatar;
+	}
+	add_filter( 'get_avatar', 'ssl_gravatar' );
 ?>
 <?php
 }
