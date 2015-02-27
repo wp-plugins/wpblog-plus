@@ -20,9 +20,12 @@ License: GPLv2 or later
 在插件更新发布之前作者都会进行调试，如果还是出现了问题可以反馈到http://ceoblog.gq/wordpress-plus，反馈后我会第一时间进行处理。
 
 == Screenshots ==
-1. 插件控制面板界面
+1. WordPress Plus +
 
 == Changelog ==
+= 1.4 =
+优化使用SSL调用Gravatar头像的方式，现在不会出现某些地方仍任是HTTP头像无法显示的问题了
+
 = 1.3.2 =
 Bug fixes and performance…解决了保存设置时的一个小问题
 

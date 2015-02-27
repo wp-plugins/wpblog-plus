@@ -59,7 +59,7 @@ function pluginoptions_page()
 <p>
 <h2>WordPress Plus + 插件控制面板</h2>
 <h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3> 
-<div id="message" class="updated"><p>WordPress Plus + 1.4版本更新日志：</br>优化使用SSL调用Gravatar头像的方式，现在不会出现某些地方仍任是HTTP头像无法显示的问题了</div>
+<div id="message" class="updated"><p>WordPress Plus + 1.4版本更新日志：</br>优化使用SSL调用Gravatar头像的方式，不会再调用HTTP头像。</div>
 </p>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
