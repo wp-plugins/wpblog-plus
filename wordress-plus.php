@@ -3,7 +3,7 @@
 Plugin Name: WordPress Plus +
 Plugin URI: http://blog.czelo.com/wordpress_plus
 Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
-Version: 1.5 Beta
+Version: 1.5
 Author: CEO
 Author URI: http://blog.czelo.com/
 */
