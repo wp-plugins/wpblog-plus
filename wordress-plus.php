@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: WordPress Plus +
-Plugin URI: http://ceoblog.gq/wordpress_plus
+Plugin URI: http://blog.czelo.com/wordpress_plus
 Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
-Version: 1.4
+Version: 1.5 Beta
 Author: CEO
-Author URI: http://ceoblog.gq/
+Author URI: http://blog.czelo.com/
 */
 
 // 启用插件自动跳转至设置 //
@@ -59,7 +59,7 @@ function pluginoptions_page()
 <p>
 <h2>WordPress Plus + 插件控制面板</h2>
 <h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3> 
-<div id="message" class="updated"><p>WordPress Plus + 1.4版本更新日志：</br>优化使用SSL调用Gravatar头像的方式，不会再调用HTTP头像。</div>
+<div id="message" class="updated"><p>WordPress Plus + 1.5 版本更新内容：</br>新增 禁止站内文章PingBack 和 自动为博客内的连接添加nofollow属性并在新窗口打开链接 功能</div>
 </p>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
@@ -72,8 +72,14 @@ function pluginoptions_page()
 <input type="checkbox" name="sslgravatar" id="sslgravatar" <?php
     echo get_option('wpplus_sslgravatar');
 ?> /> 使用SSL方式调用Gravatar头像<p>
+<input type="checkbox" name="pingback" id="pingback" <?php
+    echo get_option('wpplus_pingback');
+?> /> 禁止站内文章相互PingBack（部分主题带有此功能）<p>
+<input type="checkbox" name="nofollow" id="nofollow" <?php
+    echo get_option('wpplus_nofollow');
+?> /> 自动为博客内的连接添加nofollow属性并在新窗口打开链接<p>
 <input type="submit" class="button-primary" value="保存设置" />
-<p>WordPress Plus + 版本 1.4 &nbsp; 插件作者为<a href="http://ceoblog.gq">CEO</a>
+<p>WordPress Plus + 版本 1.5 &nbsp; 插件作者为<a href="http://blog.czelo.com">CEO</a>
 </form>
 </div>
 <?php
@@ -99,6 +105,18 @@ function pluginoptions_update()
         $display = '';
     }
     update_option('wpplus_sslgravatar', $display);
+	if ($_POST['pingback'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wpplus_nofollow', $display);
+	if ($_POST['nofollow'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wpplus_nofollow', $display);
 }
 ?>
 <?php
@@ -154,6 +172,63 @@ if (get_option('wpplus_sslgravatar') == 'checked') {
     return $avatar;
 	}
 	add_filter( 'get_avatar', 'ssl_gravatar' );
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wpplus_pingback') == 'checked') {
+?>
+<?php
+    // 禁止站内文章PingBack //
+	function no_self_ping( &$links ) {
+    $home = get_option( 'home' );
+    foreach ( $links as $l => $link )
+        if ( 0 === strpos( $link, $home ) ) unset($links[$l]);
+	}
+	add_action( 'pre_ping', 'no_self_ping' );
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wpplus_nofollow') == 'checked') {
+?>
+<?php
+    // 自动为博客内的连接添加nofollow属性并在新窗口打开链接 //
+	add_filter( 'the_content', 'cn_nf_url_parse');
+ 
+function cn_nf_url_parse( $content ) {
+	$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>";
+	if(preg_match_all("/$regexp/siU", $content, $matches, PREG_SET_ORDER)) {
+		if( !empty($matches) ) {
+			$srcUrl = get_option('siteurl');
+			for ($i=0; $i < count($matches); $i++)
+			{
+				$tag = $matches[$i][0];
+				$tag2 = $matches[$i][0];
+				$url = $matches[$i][0];
+				$noFollow = '';
+				$pattern = '/target\s*=\s*"\s*_blank\s*"/';
+				preg_match($pattern, $tag2, $match, PREG_OFFSET_CAPTURE);
+				if( count($match) < 1 )
+					$noFollow .= ' target="_blank" ';
+				$pattern = '/rel\s*=\s*"\s*[n|d]ofollow\s*"/';
+				preg_match($pattern, $tag2, $match, PREG_OFFSET_CAPTURE);
+				if( count($match) < 1 )
+					$noFollow .= ' rel="nofollow" ';
+				$pos = strpos($url,$srcUrl);
+				if ($pos === false) {
+					$tag = rtrim ($tag,'>');
+					$tag .= $noFollow.'>';
+					$content = str_replace($tag2,$tag,$content);
+				}
+			}
+		}
+	}
+	$content = str_replace(']]>', ']]>', $content);
+	return $content;
+}
 ?>
 <?php
 }

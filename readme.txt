@@ -1,6 +1,6 @@
 ﻿=== WordPress Plus + ===
 Contributors: msceo
-Donate link: http://ceoblog.gq/
+Donate link: http://blog.czelo.com/
 Tags: wordpressplus, wpplus
 Requires at least: 3.0
 Tested up to: 4.1
@@ -23,6 +23,12 @@ License: GPLv2 or later
 1. WordPress Plus +
 
 == Changelog ==
+
+= 1.5 =
+功能新增：
+禁止站内文章PingBack
+自动为博客内的连接添加nofollow属性并在新窗口打开链接
+
 = 1.4 =
 优化使用SSL调用Gravatar头像的方式，现在不会出现某些地方仍任是HTTP头像无法显示的问题了
 
