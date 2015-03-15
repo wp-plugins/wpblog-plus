@@ -2,8 +2,8 @@
 /*
 Plugin Name: WordPress Plus +
 Plugin URI: http://blog.czelo.com/wordpress_plus
-Description: 多个小工具和功能集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
-Version: 1.5
+Description: 多个功能优化集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
+Version: 1.5.1
 Author: CEO
 Author URI: http://blog.czelo.com/
 */
@@ -48,7 +48,7 @@ function wordpress_plus_menu()
 // 插件设置核心部分 //
 function pluginoptions_page()
 {
-    // 表单提交后执行的操作 //
+    // 保存设置 //
     if ($_POST['update_pluginoptions'] == 'true') {
         echo '<p><div id="message" class="updated"><p>设置已保存</p></div></p>';
         pluginoptions_update();
@@ -58,28 +58,28 @@ function pluginoptions_page()
 <div class="wrap">
 <p>
 <h2>WordPress Plus + 插件控制面板</h2>
-<h3>欢迎使用WordPress Plus + 插件，请按需调整插件功能！</h3> 
-<div id="message" class="updated"><p>WordPress Plus + 1.5 版本更新内容：</br>新增 禁止站内文章PingBack 和 自动为博客内的连接添加nofollow属性并在新窗口打开链接 功能</div>
-</p>
+<h3>感谢使用 WordPress Plus + 插件，请按照需要启用插件功能</h3>
+<div id="message" class="updated">
+<p><b>1.5.1 版本更新说明：</b><br />Google Fonts Api 相关资源已解封，出于稳定性考虑，Open-Sans加载源替换为360前端库CDN功能已被取消。</p>
+</div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
+<b>功能增强</b><hr />
 <input type="checkbox" name="msyh" id="msyh" <?php
     echo get_option('wpplus_msyh');
 ?> /> 修改后台中文字体为微软雅黑<p>
-<input type="checkbox" name="googlefont" id="googlefont" <?php
-    echo get_option('wpplus_googlefont');
-?> /> Open-Sans加载源替换为360前端库CDN<p>
 <input type="checkbox" name="sslgravatar" id="sslgravatar" <?php
     echo get_option('wpplus_sslgravatar');
 ?> /> 使用SSL方式调用Gravatar头像<p>
+<b>SEO优化</b><hr />
 <input type="checkbox" name="pingback" id="pingback" <?php
     echo get_option('wpplus_pingback');
-?> /> 禁止站内文章相互PingBack（部分主题带有此功能）<p>
+?> /> 禁止站内文章相互PingBack<p>
 <input type="checkbox" name="nofollow" id="nofollow" <?php
     echo get_option('wpplus_nofollow');
 ?> /> 自动为博客内的连接添加nofollow属性并在新窗口打开链接<p>
 <input type="submit" class="button-primary" value="保存设置" />
-<p>WordPress Plus + 版本 1.5 &nbsp; 插件作者为<a href="http://blog.czelo.com">CEO</a>
+<p>WordPress Plus + 版本 1.5.1 &nbsp; <a href="http://blog.czelo.com/wordpress_plus">吐槽 & 建议 请点击此处</a>
 </form>
 </div>
 <?php
@@ -93,12 +93,6 @@ function pluginoptions_update()
         $display = '';
     }
     update_option('wpplus_msyh', $display);
-    if ($_POST['googlefont'] == 'on') {
-        $display = 'checked';
-    } else {
-        $display = '';
-    }
-    update_option('wpplus_googlefont', $display);
     if ($_POST['sslgravatar'] == 'on') {
         $display = 'checked';
     } else {
@@ -138,26 +132,6 @@ if (get_option('wpplus_msyh') == 'checked') {
         </style>';
     }
     add_action('admin_head', 'admin_fonts');
-?>
-<?php
-}
-?>
-<?php
-if (get_option('wpplus_googlefont') == 'checked') {
-?>
-<?php
-    // 修改Open_sans加载源为360前端库CDN //
-    function devework_replace_open_sans()
-    {
-        wp_deregister_style('open-sans');
-        wp_register_style('open-sans', '//fonts.useso.com/css?family=Open+Sans:300italic,400italic,600italic,300,400,600');
-        wp_enqueue_style('open-sans');
-        if (is_admin())
-            wp_enqueue_style('open-sans');
-    }
-    add_action('wp_enqueue_scripts', 'devework_replace_open_sans');
-    add_action('admin_enqueue_scripts', 'devework_replace_open_sans');
-    add_action('init', 'devework_replace_open_sans');
 ?>
 <?php
 }

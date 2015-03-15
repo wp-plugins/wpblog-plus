@@ -8,21 +8,26 @@ Stable tag: 1.3
 License: GPLv2 or later
 
 == Description ==
-极致迷你和轻巧的WordPress Plus + 插件，轻松加速你的WordPress博客（仅建议中国大陆博主使用）。由于国内对GoogleFonts和Gravatar的服务器做了限制，导致博客速度非常缓慢，WordPress可以直接替换GooleFonts的加载源到360的前端库CDN并修改Gravatar头像的加载方式，提升你的博客速度，插件会持续优化并且添加新功能，敬请期待！
+极致迷你和轻巧的 WordPress Plus + 插件，轻松加速和增强你的WordPress博客！（仅建议中国大陆博主使用）
+WordPress的许多内置功能（例如使用的 Google Fonts Api 和 Gravatar 头像）在大陆地区使用遭到了限制，导致这些内置功能拖慢了网站的打开速度，WordPress Plus + 通过一些非常简单的方式就可以将这些内置功能加速，从而加速你的博客。
+同时，WordPress Plus + 还拥有一些SEO优化功能，帮助优化博客的SEO！
 
 == Installation ==
-1. 在WordPress 插件库中搜索"WordPress Plus +"，下载后启用插件
-2. 启用后会自动跳转设置页面，配置后保存刷新即可
+1. 通过 WordPress 插件库或者手动安装 WordPress Plus + 并启用
+2. 启用后将自动跳转至设置页面，按照需要开启对应功能保存设置即可
 
 == Frequently Asked Questions ==
 1. 插件导致博客异常
 
-在插件更新发布之前作者都会进行调试，如果还是出现了问题可以反馈到http://ceoblog.gq/wordpress-plus，反馈后我会第一时间进行处理。
+在插件更新发布之前作者都会进行调试，如果出现了问题可以反馈到http://ceoblog.gq/wordpress-plus，反馈后我会第一时间进行处理。
 
 == Screenshots ==
 1. WordPress Plus +
 
 == Changelog ==
+
+= 1.5.1 =
+Google Fonts Api 相关资源已解封，出于稳定性考虑，Open-Sans加载源替换为360前端库CDN功能已被取消。
 
 = 1.5 =
 功能新增：
