@@ -9,7 +9,9 @@ License: GPLv2 or later
 
 == Description ==
 极致迷你和轻巧的 WordPress Plus + 插件，轻松加速和增强你的WordPress博客！（仅建议中国大陆博主使用）
+
 WordPress的许多内置功能（例如使用的 Google Fonts Api 和 Gravatar 头像）在大陆地区使用遭到了限制，导致这些内置功能拖慢了网站的打开速度，WordPress Plus + 通过一些非常简单的方式就可以将这些内置功能加速，从而加速你的博客。
+
 同时，WordPress Plus + 还拥有一些SEO优化功能，帮助优化博客的SEO！
 
 == Installation ==
@@ -25,6 +27,10 @@ WordPress的许多内置功能（例如使用的 Google Fonts Api 和 Gravatar �
 1. WordPress Plus +
 
 == Changelog ==
+
+= 1.6 =
+修复 pingback选项不起作用的问题
+新增 使用必应美图作为登陆界面背景功能（背景图每日更新）
 
 = 1.5.1 =
 Google Fonts Api 相关资源已解封，出于稳定性考虑，Open-Sans加载源替换为360前端库CDN功能已被取消。

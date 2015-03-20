@@ -3,19 +3,19 @@
 Plugin Name: WordPress Plus +
 Plugin URI: http://blog.czelo.com/wordpress_plus
 Description: 多个功能优化集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
-Version: 1.5.1
+Version: 1.6
 Author: CEO
 Author URI: http://blog.czelo.com/
 */
 
 // 启用插件自动跳转至设置 //
-register_activation_hook(__FILE__, 'plugin_activate');
-add_action('admin_init', 'plugin_redirect');
-function plugin_activate()
+register_activation_hook(__FILE__, 'wordpressplus_activate');
+add_action('admin_init', 'wordpressplus_redirect');
+function wordpressplus_activate()
 {
     add_option('do_activation_redirect', true);
 }
-function plugin_redirect()
+function wordpressplus_redirect()
 {
     if (get_option('do_activation_redirect', false)) {
         delete_option('do_activation_redirect');
@@ -24,14 +24,14 @@ function plugin_redirect()
 }
 
 // 添加插件控制面板 //
-function register_plugin_settings_link($links)
+function register_wordpressplus_settings_link($links)
 {
     $settings_link = '<a href="options-general.php?page=wordpress_plus">设置</a>';
     array_unshift($links, $settings_link);
     return $links;
 }
 $plugin = plugin_basename(__FILE__);
-add_filter("plugin_action_links_{$plugin}", 'register_plugin_settings_link');
+add_filter("plugin_action_links_{$plugin}", 'register_wordpressplus_settings_link');
 
 
 // 配置插件设置 //
@@ -60,26 +60,29 @@ function pluginoptions_page()
 <h2>WordPress Plus + 插件控制面板</h2>
 <h3>感谢使用 WordPress Plus + 插件，请按照需要启用插件功能</h3>
 <div id="message" class="updated">
-<p><b>1.5.1 版本更新说明：</b><br />Google Fonts Api 相关资源已解封，出于稳定性考虑，Open-Sans加载源替换为360前端库CDN功能已被取消。</p>
+<p><b>1.6 版本更新说明：</b><br />解决Pingback选项不起作用的问题，并添加“调用Bing美图作为登陆界面背景”功能（背景图每日更新）！</p>
 </div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
 <b>功能增强</b><hr />
 <input type="checkbox" name="msyh" id="msyh" <?php
-    echo get_option('wpplus_msyh');
+    echo get_option('wordpressplus_msyh');
 ?> /> 修改后台中文字体为微软雅黑<p>
 <input type="checkbox" name="sslgravatar" id="sslgravatar" <?php
-    echo get_option('wpplus_sslgravatar');
+    echo get_option('wordpressplus_sslgravatar');
 ?> /> 使用SSL方式调用Gravatar头像<p>
+<input type="checkbox" name="bing" id="bing" <?php
+    echo get_option('wordpressplus_bing');
+?> /> 调用Bing美图作为登陆界面背景<p>
 <b>SEO优化</b><hr />
 <input type="checkbox" name="pingback" id="pingback" <?php
-    echo get_option('wpplus_pingback');
+    echo get_option('wordpressplus_pingback');
 ?> /> 禁止站内文章相互PingBack<p>
 <input type="checkbox" name="nofollow" id="nofollow" <?php
-    echo get_option('wpplus_nofollow');
+    echo get_option('wordpressplus_nofollow');
 ?> /> 自动为博客内的连接添加nofollow属性并在新窗口打开链接<p>
 <input type="submit" class="button-primary" value="保存设置" />
-<p>WordPress Plus + 版本 1.5.1 &nbsp; <a href="http://blog.czelo.com/wordpress_plus">吐槽 & 建议 请点击此处</a>
+<p>WordPress Plus + 版本 1.6 &nbsp; <a href="http://blog.czelo.com/wordpress_plus">吐槽 & 建议 请点击此处</a> &nbsp; <a href="http://blog.czelo.com/wordpress_plus#thanks">点击查看致谢名单</a>
 </form>
 </div>
 <?php
@@ -92,29 +95,39 @@ function pluginoptions_update()
     } else {
         $display = '';
     }
-    update_option('wpplus_msyh', $display);
+    update_option('wordpressplus_msyh', $display);
+	
     if ($_POST['sslgravatar'] == 'on') {
         $display = 'checked';
     } else {
         $display = '';
     }
-    update_option('wpplus_sslgravatar', $display);
+    update_option('wordpressplus_sslgravatar', $display);
+	
 	if ($_POST['pingback'] == 'on') {
         $display = 'checked';
     } else {
         $display = '';
     }
-    update_option('wpplus_nofollow', $display);
+    update_option('wordpressplus_pingback', $display);
+	
 	if ($_POST['nofollow'] == 'on') {
         $display = 'checked';
     } else {
         $display = '';
     }
-    update_option('wpplus_nofollow', $display);
+    update_option('wordpressplus_nofollow', $display);
+	
+	if ($_POST['bing'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wordpressplus_bing', $display);
 }
 ?>
 <?php
-if (get_option('wpplus_msyh') == 'checked') {
+if (get_option('wordpressplus_msyh') == 'checked') {
 ?>
 <?php
     // 改变后台字体为微软雅黑 //
@@ -137,7 +150,7 @@ if (get_option('wpplus_msyh') == 'checked') {
 }
 ?>
 <?php
-if (get_option('wpplus_sslgravatar') == 'checked') {
+if (get_option('wordpressplus_sslgravatar') == 'checked') {
 ?>
 <?php
     // 使用SSL方式调用Gravatar头像 //
@@ -151,7 +164,7 @@ if (get_option('wpplus_sslgravatar') == 'checked') {
 }
 ?>
 <?php
-if (get_option('wpplus_pingback') == 'checked') {
+if (get_option('wordpressplus_pingback') == 'checked') {
 ?>
 <?php
     // 禁止站内文章PingBack //
@@ -166,7 +179,7 @@ if (get_option('wpplus_pingback') == 'checked') {
 }
 ?>
 <?php
-if (get_option('wpplus_nofollow') == 'checked') {
+if (get_option('wordpressplus_nofollow') == 'checked') {
 ?>
 <?php
     // 自动为博客内的连接添加nofollow属性并在新窗口打开链接 //
@@ -203,6 +216,22 @@ function cn_nf_url_parse( $content ) {
 	$content = str_replace(']]>', ']]>', $content);
 	return $content;
 }
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wordpressplus_bing') == 'checked') {
+?>
+<?php
+    // 调用Bing美图作为登陆界面背景 //
+	function custom_login_head(){
+	$str=file_get_contents('http://cn.bing.com/HPImageArchive.aspx?idx=0&n=1');
+	if(preg_match("/<url>(.+?)<\/url>/ies",$str,$matches)){
+	$imgurl='http://cn.bing.com'.$matches[1];
+    echo'<style type="text/css">body{background: url('.$imgurl.');width:100%;height:100%;background-image:url('.$imgurl.');-moz-background-size: 100% 100%;-o-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;-moz-border-image: url('.$imgurl.') 0;background-repeat:no-repeat\9;background-image:none\9;}</style>';
+	}}
+	add_action('login_head', 'custom_login_head');
 ?>
 <?php
 }
