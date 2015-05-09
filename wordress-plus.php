@@ -3,7 +3,7 @@
 Plugin Name: WordPress Plus +
 Plugin URI: http://blog.czelo.com/wordpress_plus
 Description: 多个功能优化集合插件，轻松增强和加速你的WordPress（仅建议中国大陆博主使用）
-Version: 1.6
+Version: 1.7
 Author: CEO
 Author URI: http://blog.czelo.com/
 */
@@ -60,7 +60,7 @@ function pluginoptions_page()
 <h2>WordPress Plus + 插件控制面板</h2>
 <h3>感谢使用 WordPress Plus + 插件，请按照需要启用插件功能</h3>
 <div id="message" class="updated">
-<p><b>1.6 版本更新说明：</b><br />解决Pingback选项不起作用的问题，并添加“调用Bing美图作为登陆界面背景”功能（背景图每日更新）！</p>
+<p><b>1.7 版本更新说明：</b><br />抱歉！来晚了！<br />由于想不到有什么新的实用功能加进来所以插件一直都没有更新，1.7版本更新了两个新功能：禁止全英文评论 和 禁用WordPress的emoji表情 的功能，并兼容了最新的WordPress4.2.2版本，么么哒！</p>
 </div>
 <form method="POST" action="">
 <input type="hidden" name="update_pluginoptions" value="true" />
@@ -74,6 +74,12 @@ function pluginoptions_page()
 <input type="checkbox" name="bing" id="bing" <?php
     echo get_option('wordpressplus_bing');
 ?> /> 调用Bing美图作为登陆界面背景<p>
+<input type="checkbox" name="chinesetalk" id="chinesetalk" <?php
+    echo get_option('wordpressplus_chinesetalk');
+?> /> 禁止全英文评论<p>
+<input type="checkbox" name="emoji" id="emoji" <?php
+    echo get_option('wordpressplus_emoji');
+?> /> 禁用WordPress的emoji表情（仅WP4.2以上版本有效）<p>
 <b>SEO优化</b><hr />
 <input type="checkbox" name="pingback" id="pingback" <?php
     echo get_option('wordpressplus_pingback');
@@ -82,7 +88,7 @@ function pluginoptions_page()
     echo get_option('wordpressplus_nofollow');
 ?> /> 自动为博客内的连接添加nofollow属性并在新窗口打开链接<p>
 <input type="submit" class="button-primary" value="保存设置" />
-<p>WordPress Plus + 版本 1.6 &nbsp; <a href="http://blog.czelo.com/wordpress_plus">吐槽 & 建议 请点击此处</a> &nbsp; <a href="http://blog.czelo.com/wordpress_plus#thanks">点击查看致谢名单</a>
+<p>WordPress Plus + 版本 1.7 &nbsp; <a href="http://blog.czelo.com/wordpress_plus">吐槽 & 建议 请点击此处</a> &nbsp; <a href="http://blog.czelo.com/wordpress_plus#thanks">点击查看致谢名单</a>
 </form>
 </div>
 <?php
@@ -124,6 +130,20 @@ function pluginoptions_update()
         $display = '';
     }
     update_option('wordpressplus_bing', $display);
+
+    if ($_POST['chinesetalk'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wordpressplus_chinesetalk', $display);
+
+    if ($_POST['emoji'] == 'on') {
+        $display = 'checked';
+    } else {
+        $display = '';
+    }
+    update_option('wordpressplus_emoji', $display);
 }
 ?>
 <?php
@@ -232,6 +252,66 @@ if (get_option('wordpressplus_bing') == 'checked') {
     echo'<style type="text/css">body{background: url('.$imgurl.');width:100%;height:100%;background-image:url('.$imgurl.');-moz-background-size: 100% 100%;-o-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;-moz-border-image: url('.$imgurl.') 0;background-repeat:no-repeat\9;background-image:none\9;}</style>';
 	}}
 	add_action('login_head', 'custom_login_head');
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wordpressplus_chinesetalk') == 'checked') {
+?>
+<?php
+    // 禁止全英文评论 //
+	function v7v3_en($comment) {
+ 	$pattern = '/[一-龥]/u';  
+ 	$cau=$comment['comment_author'] ;
+ 	$cem=$comment['comment_author_email'] ; 
+	 global $wpdb;
+	 $ok_to_comment = $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$cau' AND comment_author_email = '$cem' and comment_approved = '1' LIMIT 1");
+ 	if( is_user_logged_in() || 1 == $ok_to_comment ){ return $comment; } 
+ 	elseif ( !preg_match_all($pattern, $ccontent, $match) ) {
+ 	exit('
+	<head><meta http-equiv="Content-Type" content="text/html; charset=utf8"/></head>
+	<b>初次评论不允许纯英文哦~</b>');
+ 	} 
+	} 
+	add_filter('preprocess_comment', 'v7v3_en'); 
+	function v7v3_comment_post( $incoming_comment ) {
+	$http = '/[<|KTV|ッ|の|ン|優|業|グ|貿|]/u';
+	if(preg_match($http, $incoming_comment['comment_content'])) {
+	wp_die( "
+	<head><meta http-equiv='Content-Type' content='text/html; charset=utf8'/></head>
+	您的评论包含敏感关键词，被系统判断为垃圾评论！<a href='javascript:history.go(-1);'>向上一页</a>" );
+	}
+	return( $incoming_comment );
+	}
+	add_filter('preprocess_comment', 'v7v3_comment_post');
+?>
+<?php
+}
+?>
+<?php
+if (get_option('wordpressplus_emoji') == 'checked') {
+?>
+<?php
+    // 禁用WordPress的emoji表情 //
+	function disable_emojis() {
+ 	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+ 	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+ 	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+ 	remove_action( 'admin_print_styles', 'print_emoji_styles' ); 
+ 	remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+ 	remove_filter( 'comment_text_rss', 'wp_staticize_emoji' ); 
+ 	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+ 	add_filter( 'tiny_mce_plugins', 'disable_emojis_tinymce' );
+	}
+	add_action( 'init', 'disable_emojis' );
+	function disable_emojis_tinymce( $plugins ) {
+ 	if ( is_array( $plugins ) ) {
+ 	return array_diff( $plugins, array( 'wpemoji' ) );
+ 	} else {
+ 	return array();
+ 	}
+	}
 ?>
 <?php
 }

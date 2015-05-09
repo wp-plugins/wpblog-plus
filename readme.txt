@@ -3,7 +3,7 @@ Contributors: msceo
 Donate link: http://blog.czelo.com/
 Tags: wordpressplus, wpplus
 Requires at least: 3.0
-Tested up to: 4.1
+Tested up to: 4.2.2
 Stable tag: 1.3
 License: GPLv2 or later
 
@@ -27,6 +27,10 @@ WordPress的许多内置功能（例如使用的 Google Fonts Api 和 Gravatar �
 1. WordPress Plus +
 
 == Changelog ==
+
+= 1.7 =
+抱歉！来晚了！
+由于想不到有什么新的实用功能加进来所以插件一直都没有更新，现在1.7版本已发布，更新了两个新功能：禁止全英文评论 和 禁用WordPress的emoji表情 的功能，并兼容了最新的WordPress4.2.2版本，么么哒！
 
 = 1.6 =
 修复 pingback选项不起作用的问题
